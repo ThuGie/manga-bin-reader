@@ -1,48 +1,36 @@
-# Manga Bin Reader
-
-## Quick Start
-
-1. Download the repository
-2. Open `index.html` in your web browser
-3. Start managing your manga library!
-
-## Features
-
-- Add manga with name, description, and cover image
-- Add chapters to mangas
-- Completely browser-based
-- Uses localStorage for data persistence
-- No installation required
-- Works in any modern web browser
+# 📚 Manga Library
 
 ## How to Use
 
-1. Enter Manga Details
-   - Fill in manga name
-   - Add optional description
-   - Upload a cover image (optional)
+1. Download `index.html`
+2. Open in any web browser
+3. Start managing your manga collection!
 
-2. Add Chapters
-   - Click "Add Chapter" on a manga
-   - Enter chapter number
-   - Provide image URLs (comma-separated)
+## Features
 
-## Requirements
+- Add manga with name, description, cover
+- Add chapters to mangas
+- Store data in browser
+- No installation required
+- 100% browser-based
 
-- Any modern web browser (Chrome, Firefox, Safari, Edge)
-- No additional software needed
+## Quick Start
+
+- Click "Add Manga"
+- Enter manga details
+- Upload cover image (optional)
+- Add chapters with image URLs
 
 ## Data Storage
 
-- All data is stored in your browser's localStorage
-- Data persists between browser sessions
-- Clear browser data to reset library
+- Uses browser's localStorage
+- Data persists between sessions
+- Completely private to your browser
 
-## Limitations
+## Requirements
 
-- Data is local to your browser
-- No cloud/network synchronization
-- Limited by browser's localStorage capacity
+- Any modern web browser
+- No additional software needed
 
 ## License
 
