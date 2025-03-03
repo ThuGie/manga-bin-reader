@@ -1,98 +1,49 @@
 # Manga Bin Reader
 
-## Quick Start Guide
+## Quick Start
 
-### Prerequisites
-- Node.js (14.0+ recommended)
-- PHP (7.4+ recommended)
-- Composer
-- MySQL/MariaDB
-- Docker (optional)
+1. Download the repository
+2. Open `index.html` in your web browser
+3. Start managing your manga library!
 
-### Local Development Setup
+## Features
 
-#### 1. Clone the Repository
-```bash
-git clone https://github.com/ThuGie/manga-bin-reader.git
-cd manga-bin-reader
-```
+- Add manga with name, description, and cover image
+- Add chapters to mangas
+- Completely browser-based
+- Uses localStorage for data persistence
+- No installation required
+- Works in any modern web browser
 
-#### 2. Run Setup Script
-```bash
-# Make setup script executable
-chmod +x setup.sh
+## How to Use
 
-# Run setup (requires sudo for directory permissions)
-sudo ./setup.sh
-```
+1. Enter Manga Details
+   - Fill in manga name
+   - Add optional description
+   - Upload a cover image (optional)
 
-#### 3. Database Setup
-```bash
-# Option 1: Manual Database Creation
-mysql -u root -p
-> CREATE DATABASE manga_library;
-> USE manga_library;
-> source database/migrations/001_create_initial_tables.sql;
+2. Add Chapters
+   - Click "Add Chapter" on a manga
+   - Enter chapter number
+   - Provide image URLs (comma-separated)
 
-# Option 2: Using Docker Compose
-docker-compose up -d database
-```
+## Requirements
 
-#### 4. Configure Environment
-```bash
-# Edit .env file with your database credentials
-nano .env
-```
+- Any modern web browser (Chrome, Firefox, Safari, Edge)
+- No additional software needed
 
-#### 5. Start Development Servers
-```bash
-# Start PHP built-in server
-php -S localhost:8000 -t frontend
+## Data Storage
 
-# In another terminal, start frontend dev server
-npm run start:dev
-```
+- All data is stored in your browser's localStorage
+- Data persists between browser sessions
+- Clear browser data to reset library
 
-### Docker Setup (Alternative)
-```bash
-# Build and start all services
-docker-compose up -d
+## Limitations
 
-# View logs
-docker-compose logs
+- Data is local to your browser
+- No cloud/network synchronization
+- Limited by browser's localStorage capacity
 
-# Stop containers
-docker-compose down
-```
+## License
 
-### Development Scripts
-- `npm run build`: Build production frontend
-- `npm test`: Run JavaScript tests
-- `composer test`: Run PHP tests
-- `npm run lint`: Lint JavaScript code
-- `composer lint`: Lint PHP code
-
-### Troubleshooting
-- Ensure all dependencies are installed
-- Check `.env` file configuration
-- Verify PHP extensions are enabled
-- Confirm database connection settings
-
-### Project Structure
-```
-manga-bin-reader/
-├── backend/           # PHP backend scripts
-├── frontend/          # React frontend
-├── storage/           # Manga storage
-│   ├── manga_bins/    # Binary manga files
-│   ├── manga_covers/  # Cover image storage
-│   └── temp_uploads/ # Temporary upload directory
-├── database/          # Database migrations
-└── tests/             # Unit and integration tests
-```
-
-### Contributing
-Please read `CONTRIBUTING.md` for details on our code of conduct and the process for submitting pull requests.
-
-### License
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+MIT License
