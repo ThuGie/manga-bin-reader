@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manga Bin Reader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .manga-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .manga-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .manga-card img {
+            max-width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manga Library</h1>
+        
+        <button id="addMangaBtn" class="button">Add New Manga</button>
+        
+        <div id="mangaList" class="manga-list">
+            <!-- Manga cards will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Add Manga Modal -->
+    <div id="addMangaModal" class="modal">
+        <div class="modal-content">
+            <h2>Add New Manga</h2>
+            <form id="addMangaForm">
+                <div>
+                    <label for="mangaName">Manga Name:</label>
+                    <input type="text" id="mangaName" required>
+                </div>
+                <div>
+                    <label for="mangaCover">Cover Image:</label>
+                    <input type="file" id="mangaCover" accept="image/*">
+                </div>
+                <div>
+                    <label for="mangaDescription">Description:</label>
+                    <textarea id="mangaDescription"></textarea>
+                </div>
+                <button type="submit" class="button">Add Manga</button>
+                <button type="button" id="cancelAddManga" class="button" style="background-color: #f44336;">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Manga Storage Management
+        class MangaStorage {
+            constructor() {
+                this.mangas = JSON.parse(localStorage.getItem('mangas') || '[]');
+            }
+
+            addManga(manga) {
+                this.mangas.push({
+                    id: Date.now().toString(),
+                    ...manga,
+                    chapters: []
+                });
+                this.save();
+            }
+
+            addChapter(mangaId, chapter) {
+                const manga = this.mangas.find(m => m.id === mangaId);
+                if (manga) {
+                    manga.chapters.push({
+                        id: Date.now().toString(),
+                        ...chapter
+                    });
+                    this.save();
+                }
+            }
+
+            save() {
+                localStorage.setItem('mangas', JSON.stringify(this.mangas));
+                this.renderMangaList();
+            }
+
+            renderMangaList() {
+                const mangaList = document.getElementById('mangaList');
+                mangaList.innerHTML = '';
+
+                this.mangas.forEach(manga => {
+                    const card = document.createElement('div');
+                    card.className = 'manga-card';
+                    card.innerHTML = `
+                        <h3>${manga.name}</h3>
+                        ${manga.coverImage ? `<img src="${manga.coverImage}" alt="${manga.name} cover">` : ''}
+                        <p>${manga.description || 'No description'}</p>
+                        <button class="button" onclick="openChapterModal('${manga.id}')">Add Chapter</button>
+                        <button class="button" onclick="viewChapters('${manga.id}')">View Chapters</button>
+                    `;
+                    mangaList.appendChild(card);
+                });
+            }
+        }
+
+        // Initialize storage
+        const mangaStorage = new MangaStorage();
+        mangaStorage.renderMangaList();
+
+        // Add Manga Modal Handling
+        const addMangaModal = document.getElementById('addMangaModal');
+        const addMangaBtn = document.getElementById('addMangaBtn');
+        const cancelAddMangaBtn = document.getElementById('cancelAddManga');
+        const addMangaForm = document.getElementById('addMangaForm');
+
+        addMangaBtn.addEventListener('click', () => {
+            addMangaModal.style.display = 'flex';
+        });
+
+        cancelAddMangaBtn.addEventListener('click', () => {
+            addMangaModal.style.display = 'none';
+        });
+
+        addMangaForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('mangaName').value;
+            const description = document.getElementById('mangaDescription').value;
+            const coverInput = document.getElementById('mangaCover');
+            
+            // Handle cover image
+            if (coverInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    mangaStorage.addManga({
+                        name,
+                        description,
+                        coverImage: event.target.result
+                    });
+                    addMangaModal.style.display = 'none';
+                    addMangaForm.reset();
+                };
+                reader.readAsDataURL(coverInput.files[0]);
+            } else {
+                mangaStorage.addManga({
+                    name,
+                    description
+                });
+                addMangaModal.style.display = 'none';
+                addMangaForm.reset();
+            }
+        });
+
+        // Function to open chapter modal
+        function openChapterModal(mangaId) {
+            const chapterName = prompt('Enter chapter number:');
+            const chapterImages = prompt('Enter comma-separated image paths:');
+            
+            if (chapterName && chapterImages) {
+                const images = chapterImages.split(',').map(path => path.trim());
+                mangaStorage.addChapter(mangaId, {
+                    number: chapterName,
+                    images
+                });
+            }
+        }
+
+        // Function to view chapters
+        function viewChapters(mangaId) {
+            const manga = mangaStorage.mangas.find(m => m.id === mangaId);
+            if (manga && manga.chapters.length > 0) {
+                alert(manga.chapters.map(chapter => 
+                    `Chapter ${chapter.number}: ${chapter.images.length} images`
+                ).join('\n'));
+            } else {
+                alert('No chapters added yet.');
+            }
+        }
+    </script>
+</body>
+</html>
