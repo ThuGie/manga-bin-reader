@@ -1,1 +1,1 @@
-# Removed
+DELETE THIS FILE
