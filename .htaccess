@@ -1,0 +1,112 @@
+# Manga Bin Reader .htaccess Configuration
+
+# Disable directory browsing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "^(config\.php|\.env)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect backend directories
+<Directory "backend/">
+    Order deny,allow
+    Deny from all
+</Directory>
+
+# Allow access to specific backend scripts
+<Files "backend/serve-bin.php">
+    Order allow,deny
+    Allow from all
+</Files>
+
+<Files "backend/manga-metadata.php">
+    Order allow,deny
+    Allow from all
+</Files>
+
+<Files "backend/upload-chapter.php">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Set default character encoding
+AddDefaultCharset UTF-8
+
+# Compress text files
+<IfModule mod_deflate.c>
+    # Compress HTML, CSS, JavaScript, Text, XML and fonts
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/x-font
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/x-font-otf
+    AddOutputFilterByType DEFLATE application/x-font-truetype
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE image/x-icon
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+</IfModule>
+
+# Enable Keep-Alive
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
+
+# Set max upload file size
+php_value upload_max_filesize 200M
+php_value post_max_size 200M
+
+# Set maximum execution time for uploads
+php_value max_execution_time 300
+php_value max_input_time 300
+
+# Prevent viewing of .bin files directly
+<FilesMatch "\.bin$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Redirect all requests to index.html for SPA-like behavior
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Existing files and directories should not be rewritten
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Rewrite to index.html
+    RewriteRule ^(.*)$ frontend/index.html [L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    # Prevent clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # Prevent MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Enable XSS protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Strict HSTS (uncomment after testing)
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# Error documents
+ErrorDocument 404 /frontend/index.html
+ErrorDocument 500 /frontend/index.html
