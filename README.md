@@ -1,34 +1,74 @@
 # Manga Bin Reader
 
-## Overview
-A web application for managing and reading manga using efficient bin file storage.
+## Quick Start Guide
 
-## Features
-- Store manga in compact bin files
-- Manage manga library
-- Read manga chapters with minimal server load
+### Prerequisites
+- Node.js (14.0+ recommended)
+- PHP (7.4+ recommended)
+- Composer
+- Docker (optional)
 
-## Project Structure
-- `frontend/`: Client-side application
-- `backend/`: Server-side PHP scripts
-- `storage/`: Directory for storing manga bin files
+### Local Development Setup
 
-## Setup
-1. Clone the repository
-2. Set up a PHP-enabled web server
-3. Configure the storage directory
-4. Open `frontend/index.html` in a web browser
+#### 1. Clone the Repository
+```bash
+git clone https://github.com/ThuGie/manga-bin-reader.git
+cd manga-bin-reader
+```
 
-## Requirements
-- PHP 7.4+
-- Web server (Apache/Nginx)
-- Modern web browser with JavaScript support
+#### 2. Install Dependencies
+```bash
+# Install PHP dependencies
+composer install
 
-## How It Works
-The application stores manga chapters in binary files, allowing efficient storage and retrieval of images with minimal server resources.
+# Install Node.js dependencies
+npm install
+```
 
-## Contributing
-Feel free to open issues or submit pull requests.
+#### 3. Configure Environment
+```bash
+# Copy example environment file
+cp .env.example .env
 
-## License
-MIT License
+# Edit .env file with your configuration
+```
+
+#### 4. Start Development Server
+```bash
+# Start frontend development server
+npm run start:dev
+
+# Or start simple http server
+npm start
+```
+
+#### 5. Backend Server
+- Ensure you have a PHP-enabled web server (Apache/Nginx)
+- Point document root to the project directory
+
+### Docker Setup (Alternative)
+```bash
+# Build and start containers
+docker-compose up -d
+
+# Stop containers
+docker-compose down
+```
+
+### Development Scripts
+- `npm run build`: Build production frontend
+- `npm test`: Run JavaScript tests
+- `composer test`: Run PHP tests
+- `npm run lint`: Lint JavaScript code
+- `composer lint`: Lint PHP code
+
+### Troubleshooting
+- Ensure all dependencies are installed
+- Check `.env` file configuration
+- Verify PHP extensions are enabled
+
+### Contributing
+Please read `CONTRIBUTING.md` for details on our code of conduct and the process for submitting pull requests.
+
+### License
+This project is licensed under the MIT License - see the `LICENSE` file for details.
