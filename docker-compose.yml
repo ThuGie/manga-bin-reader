@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: manga-bin-reader
+    ports:
+      - "8080:80"
+    volumes:
+      - ./storage:/var/www/html/storage
+      - ./logs:/var/www/html/logs
+    environment:
+      - PHP_MAX_EXECUTION_TIME=300
+      - PHP_MEMORY_LIMIT=256M
+      - PHP_UPLOAD_MAX_FILESIZE=200M
+      - PHP_POST_MAX_SIZE=200M
+
+  database:
+    image: mysql:8.0
+    container_name: manga-database
+    environment:
+      MYSQL_ROOT_PASSWORD: manga_root_password
+      MYSQL_DATABASE: manga_library
+      MYSQL_USER: manga_user
+      MYSQL_PASSWORD: manga_user_password
+    volumes:
+      - manga-db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: manga-phpmyadmin
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: manga_root_password
+    ports:
+      - "8081:80"
+    depends_on:
+      - database
+
+volumes:
+  manga-db-data:
+
+networks:
+  default:
+    driver: bridge
