@@ -1,0 +1,85 @@
+# Manga Bin Reader .gitignore
+
+# PHP Composer dependencies
+/vendor/
+composer.lock
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+
+# Logs
+/logs/
+*.log
+
+# Storage (large files and user-uploaded content)
+/storage/manga_bins/
+/storage/manga_covers/
+/storage/temp_uploads/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+.komodotools/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build outputs
+/dist/
+/build/
+
+# Backup files
+*.bak
+*.gho
+*.ori
+*.orig
+*.tmp
+
+# Compressed files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Security sensitive files
+config.php
+.htpasswd
+.htaccess.bak
+
+# Temporary binary files
+*.bin
+!frontend/bin-reader.js
+
+# Cached files
+*.cache
+
+# Project-specific exclusions
+.project
+.buildpath
+
+# Miscellaneous
+.tmp/
+.temp/
