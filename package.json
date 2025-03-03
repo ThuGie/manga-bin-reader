@@ -5,78 +5,45 @@
     "main": "frontend/index.html",
     "scripts": {
         "start": "npx http-server frontend -p 8080",
+        "start:dev": "webpack serve --mode development --open",
+        "build": "webpack --mode production",
         "test": "jest",
         "lint": "eslint frontend/**/*.js",
         "lint:fix": "eslint frontend/**/*.js --fix",
-        "build": "webpack --mode production",
-        "dev": "webpack serve --mode development"
+        "prepare": "npm run build",
+        "setup": "npm install && composer install",
+        "docker:build": "docker-compose build",
+        "docker:up": "docker-compose up -d",
+        "docker:down": "docker-compose down"
     },
     "repository": {
         "type": "git",
         "url": "https://github.com/ThuGie/manga-bin-reader.git"
     },
-    "keywords": [
-        "manga",
-        "reader",
-        "bin-file",
-        "web-app"
-    ],
+    "keywords": ["manga", "reader", "bin-file", "web-app"],
     "author": "ThuGhacK",
     "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/ThuGie/manga-bin-reader/issues"
-    },
-    "homepage": "https://github.com/ThuGie/manga-bin-reader#readme",
     "dependencies": {
         "react": "^17.0.2",
-        "react-dom": "^17.0.2"
+        "react-dom": "^17.0.2",
+        "papaparse": "^5.3.1"
     },
     "devDependencies": {
         "@babel/core": "^7.14.6",
         "@babel/preset-env": "^7.14.7",
         "@babel/preset-react": "^7.14.5",
         "babel-loader": "^8.2.2",
-        "eslint": "^7.31.0",
-        "eslint-plugin-react": "^7.24.0",
-        "jest": "^27.0.6",
         "webpack": "^5.45.1",
         "webpack-cli": "^4.7.2",
         "webpack-dev-server": "^3.11.2",
+        "html-webpack-plugin": "^5.3.2",
+        "eslint": "^7.31.0",
+        "eslint-plugin-react": "^7.24.0",
+        "jest": "^27.0.6",
         "http-server": "^14.0.0"
     },
-    "jest": {
-        "testEnvironment": "jsdom",
-        "setupFilesAfterEnv": [
-            "<rootDir>/tests/setupTests.js"
-        ]
-    },
-    "eslintConfig": {
-        "extends": [
-            "eslint:recommended",
-            "plugin:react/recommended"
-        ],
-        "parserOptions": {
-            "ecmaVersion": 2021,
-            "sourceType": "module",
-            "ecmaFeatures": {
-                "jsx": true
-            }
-        },
-        "rules": {
-            "react/prop-types": "off",
-            "no-console": "warn"
-        }
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
+    "engines": {
+        "node": ">=14.0.0",
+        "npm": ">=6.0.0"
     }
 }
